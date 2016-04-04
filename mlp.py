@@ -25,3 +25,4 @@ class MLP:
     res(:,0) = input
     for i in range(2,ts-1):
       res(:,i) = net.activate(res(:,i-1))
+    return res
