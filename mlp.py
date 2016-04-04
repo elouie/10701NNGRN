@@ -13,16 +13,16 @@ class MLP:
   def train(self, input, epochs):
     nm = self.nm
     ds = SupervisedDataSet(nm, nm)
-    ds.setField('input', np.delete(input,0,1))
-    ds.setField('target', np.delete(input,input.shape[1],1))
-    trainer = BackpropTrainer(self.network, dataset)
+    ds.setField('input', np.transpose(np.delete(input,0,1)))
+    ds.setField('target', np.transpose(np.delete(input,input.shape[1]-1,1)))
+    trainer = BackpropTrainer(self.network, ds)
     for index in range(epochs):
       trainer.train()
 
   def test(self, input, ts):
     net = self.network
-    res = zeros(self.nm, ts)
-    res(:,0) = input
+    res = np.zeros((self.nm, ts))
+    res[:,0] = input
     for i in range(2,ts-1):
-      res(:,i) = net.activate(res(:,i-1))
+      res[:,i] = net.activate(res[:,i-1])
     return res
