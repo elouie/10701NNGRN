@@ -54,4 +54,4 @@ def plot(data_1,data_2,final_time_step = 200,initial_time_step = 0):
 if __name__ == '__main__':
    data = data_load('15B-no_0',0,1)
    # print data[2]
-   plot(data[100],data[4])
+   plot(data[100],data[4]) # Example data_set
