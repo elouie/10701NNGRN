@@ -18,7 +18,7 @@ def data_load(filename, Run_num_start, Run_num_end):
                            line = line.split()
                            line = line[1:]
                            data = [data, list(line)]
-
+        data = np.array(data)
         return data
 
 
