@@ -17,7 +17,7 @@ from pybrain.datasets import SupervisedDataSet
 class MLP:
   def __init__(self, numMolecules):
     self.nm = numMolecules
-    network = buildNetwork(numMolecules, numMolecules, numMolecules, hiddenclass=TanhLayer, outclass=SigmoidLayer)
+    network = buildNetwork(numMolecules, numMolecules, numMolecules, maxEpochs=200, hiddenclass=TanhLayer, outclass=SigmoidLayer, validationProportion=0)
     self.network = network
 
   def train(self, input, epochs):
