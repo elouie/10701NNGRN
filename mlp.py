@@ -1,7 +1,7 @@
 import numpy as np
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
-from pybrain.structure import FeedForwardNetwork, LinearLayer, TanhLayer, FullConnection
+from pybrain.structure import FeedForwardNetwork, LinearLayer, TanhLayer, FullConnection, GaussianLayer
 from pybrain.datasets import SupervisedDataSet
 
 # To test, create array:
@@ -11,12 +11,12 @@ from pybrain.datasets import SupervisedDataSet
 # from mlp import MLP
 # net = MLP(3)
 # net.train(a,3)
-# ⁠⁠⁠net.test((1,0,0),8)
+# net.test((1,0,0),8)
 
 class MLP:
   def __init__(self, numMolecules):
     self.nm = numMolecules
-    network = buildNetwork(numMolecules, numMolecules, numMolecules, hiddenclass=TanhLayer)
+    network = buildNetwork(numMolecules, numMolecules, numMolecules, hiddenclass=TanhLayer, outclass=GaussianLayer)
     self.network = network
 
   def train(self, input, epochs):
@@ -33,5 +33,8 @@ class MLP:
     res = np.zeros((self.nm, ts))
     res[:,0] = input
     for i in range(2,ts-1):
-      res[:,i] = net.activate(res[:,i-1])
+      tmp = net.activate(res[:,i-1])
+      tmp[tmp>0.5] = 1
+      tmp[tmp<=0.5] = 0
+      res[:,i] = tmp
     return res
