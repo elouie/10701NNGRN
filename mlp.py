@@ -4,6 +4,15 @@ from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure import FeedForwardNetwork, LinearLayer, TanhLayer, FullConnection
 from pybrain.datasets import SupervisedDataSet
 
+# To test, create array:
+# 
+# import numpy as np
+# a = array([[ 1,  0,  0,  1,  1,  1,  0,  0], [ 0,  0,  1,  0,  1,  1,  0,  1], [ 0,  0,  1,  1,  1,  0,  0,  1]])
+# from mlp import MLP
+# net = MLP(3)
+# net.train(a,3)
+# ⁠⁠⁠net.test((1,0,0),8)
+
 class MLP:
   def __init__(self, numMolecules):
     self.nm = numMolecules
