@@ -45,9 +45,9 @@ def plot(data_1,data_2,final_time_step = 200,initial_time_step = 0):
         X_axis.append(i)
         Y_axis_orig_data.append(int(data_1[i]))
         Y_axis_NN_data.append(int(data_2[i]))
-        plt.plot( X_axis,Y_axis_orig_data, 'ro', X_axis, Y_axis_NN_data, 'bo')  
-        plt.axis([0,final_time_step, 0, 2])
-       # plt.xticks(X_axis)             ## to show all X axis data; but it looks too cluturred
+    plt.plot( X_axis,Y_axis_orig_data, 'ro', X_axis, Y_axis_NN_data, 'bo')  
+    plt.axis([0,final_time_step, 0, 2])
+    # plt.xticks(X_axis)             ## to show all X axis data; but it looks too cluturred
     plt.show()
 
 
