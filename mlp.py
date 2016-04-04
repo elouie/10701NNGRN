@@ -1,8 +1,9 @@
 import numpy as np
+import time
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
-from pybrain.structure import FeedForwardNetwork, LinearLayer, TanhLayer, FullConnection, GaussianLayer
-from pybrain.datasets import SupervisedDataSet
+from pybrain.structure import FeedForwardNetwork, LinearLayer, TanhLayer, FullConnection, GaussianLayer, SigmoidLayer
+from pybrain.datasets import SupervisedDataSet, ClassificationDataSet
 
 # To test, create array:
 # 
@@ -16,17 +17,21 @@ from pybrain.datasets import SupervisedDataSet
 class MLP:
   def __init__(self, numMolecules):
     self.nm = numMolecules
-    network = buildNetwork(numMolecules, numMolecules, numMolecules, hiddenclass=TanhLayer, outclass=GaussianLayer)
+    network = buildNetwork(numMolecules, numMolecules, numMolecules, hiddenclass=TanhLayer, outclass=SigmoidLayer)
     self.network = network
 
   def train(self, input, epochs):
     nm = self.nm
-    ds = SupervisedDataSet(nm, nm)
+    ds = ClassificationDataSet(nm, nm, 2)
     ds.setField('input', np.transpose(np.delete(input,0,1)))
     ds.setField('target', np.transpose(np.delete(input,input.shape[1]-1,1)))
     trainer = BackpropTrainer(self.network, ds)
+    start = time.time()
     for index in range(epochs):
+      # print "Running epoch " + `index` + "..."
       trainer.train()
+    elapsed = (time.time() - start)
+    print "Took " + `elapsed` + "ms to run."
 
   def test(self, input, ts):
     net = self.network
