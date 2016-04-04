@@ -17,14 +17,14 @@ def data_load(filename, Run_num_start, Run_num_end):
                       elif copy:
                            line = line.split()
                            line = line[1:]
-                           data = [data, list(line)]
-        data = np.array(data)
+			   data.append(np.array(line))
+        data = np.array(data)    
         return data
 
 
 def main():
     data = data_load('13A-no_0',0,1)
-    print data
+    print data.shape
 
 main()      
 
