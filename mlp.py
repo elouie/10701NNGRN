@@ -17,7 +17,7 @@ from pybrain.datasets import SupervisedDataSet
 class MLP:
   def __init__(self, numMolecules):
     self.nm = numMolecules
-    network = buildNetwork(numMolecules, numMolecules, numMolecules, maxEpochs=200, hiddenclass=TanhLayer, outclass=SigmoidLayer, validationProportion=0)
+    network = buildNetwork(numMolecules, numMolecules, numMolecules, hiddenclass=TanhLayer, outclass=SigmoidLayer)
     self.network = network
 
   def train(self, input, epochs):
@@ -28,9 +28,9 @@ class MLP:
     trainer = BackpropTrainer(self.network, ds)
     start = time.time()
     for index in range(epochs):
-      print "Running epoch " + `index` + "..."
+      # print "Running epoch " + `index` + "..."
       err = trainer.train()
-      print "Epoch resulted with " + `err` + " error."
+      # print "Epoch resulted with " + `err` + " error."
     elapsed = (time.time() - start)
     print "Took " + `elapsed` + "ms to run."
 
