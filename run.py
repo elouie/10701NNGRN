@@ -2,10 +2,9 @@
 import numpy as np
 from mlp import MLP
 from load_data import data_load
-from pybrain.tools.xml import NetworkWriter
 
 def main():
-  numHiddenNodes = 124
+  numHiddenNodes = 25
   numMolecules = 124
   numTimesteps = 201
   numRuns = 99
