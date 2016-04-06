@@ -1,6 +1,6 @@
 # This file retrieves the data, creates an algorithm, runs the prediction, saves the results to files, then creates plots of the error
 import numpy as np
-from mlp2 import MLP
+from mlp import MLP
 from load_data import data_load
 
 def main():
