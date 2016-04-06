@@ -23,8 +23,8 @@ class MLP:
   def train(self, input):
     nm = self.nm
     ds = SupervisedDataSet(nm, nm)
-    ds.setField('input', np.transpose(np.delete(input,0,1)))
-    ds.setField('target', np.transpose(np.delete(input,input.shape[1]-1,1)))
+    ds.setField('input', np.transpose(np.delete(input,input.shape[1]-1,1)))
+    ds.setField('target', np.transpose(np.delete(input,0,1)))
     trainer = BackpropTrainer(self.network, ds)
     trainer.train()
 

@@ -4,7 +4,7 @@ from mlp import MLP
 from load_data import data_load
 
 def main():
-  numHiddenNodes = 25
+  numHiddenNodes = 75
   numMolecules = 124
   numTimesteps = 201
   numRuns = 99
@@ -35,9 +35,9 @@ def main():
         #np.savetxt("results/data_hiddennodes" + runString + `k` + "_train_actual.csv", fullTestData, delimiter=",", fmt="%d")
         if (k == 71):
           np.savetxt("results/data_hiddennodes" + runString + `k` + "_train_predicted.csv", res, delimiter=",", fmt="%d")
+      trainErr = trainErr / 75
       np.savetxt("results/error_hiddennodes" + runString + `k` + "_train.csv", trainErr, delimiter=",", fmt="%f")
 
-      trainErr = trainErr / 75
       # Get test error and output
       testErr = np.zeros(201)
       for k in range(75, numRuns):
