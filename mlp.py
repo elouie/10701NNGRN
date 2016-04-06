@@ -41,3 +41,11 @@ class MLP:
 
     # Calculate error
     return err, res
+
+  def meansqerr(self, input, res, ts):
+    # Get the mean squared error
+    nm = self.nm
+    err = np.zeros(ts)
+    for i in range(ts)
+      err[i] = np.absolute(input[:, i] - res[:,i])/nm
+    return err

@@ -29,7 +29,8 @@ def main():
       trainErr = np.zeros[201]
       for k in range(1, 75):
         testData = data[:,0,k]
-        err, res = net.test(testData, 201)
+        res = net.test(testData, 201)
+        err = net.meansqerr(data[:,:,k],res,201)
         trainErr = trainErr + err
         np.savetxt("results/data_hiddennodes" + runString + `k` + "_train_actual.csv", testData, delimiter=",", fmt="%d")
         np.savetxt("results/data_hiddennodes" + runString + `k` + "_train_predicted.csv", res, delimiter=",", fmt="%d")
@@ -40,7 +41,8 @@ def main():
       testErr = np.zeros[201]
       for k in range(75, 100):
         trainData = data[:,0,k]
-        err, res = net.test(trainData, 201)
+        res = net.test(trainData, 201)
+        err = net.meansqerr(data[:,:,k],res,201)
         testErr = testErr + err
         np.savetxt("results/data_hiddennodes" + runString + `k` + "_test_actual.csv", trainData, delimiter=",", fmt="%d")
         np.savetxt("results/data_hiddennodes" + runString + `k` + "_test_predicted.csv", res, delimiter=",", fmt="%d")
