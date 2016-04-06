@@ -9,7 +9,7 @@ def main():
   numMolecules = 124
   numTimesteps = 201
   numRuns = 99
-  numEpochs = 10001
+  numEpochs = 201
   net = MLP(numMolecules, numHiddenNodes)
 
   # Load the data into a matrix for use over epochs
