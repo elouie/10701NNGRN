@@ -20,27 +20,24 @@ class MLP:
     network = buildNetwork(numMolecules, numMolecules/2, numMolecules, hiddenclass=TanhLayer, outclass=TanhLayer)
     self.network = network
 
-  def train(self, input, epochs):
+  def train(self, input):
     nm = self.nm
     ds = SupervisedDataSet(nm, nm)
     ds.setField('input', np.transpose(np.delete(input,0,1)))
     ds.setField('target', np.transpose(np.delete(input,input.shape[1]-1,1)))
     trainer = BackpropTrainer(self.network, ds)
-    start = time.time()
-    #for index in range(epochs):
-    # print "Running epoch " + `index` + "..."
-    err = trainer.trainEpochs(epochs)
-    # print "Epoch resulted with " + `err` + " error."
-    elapsed = (time.time() - start)
-    print "Took " + `elapsed` + "ms to run."
 
   def test(self, input, ts):
     net = self.network
     res = np.zeros((self.nm, ts))
     res[:,0] = input
-    for i in range(1,ts-1):
+    
+    # Predict timesteps ahead
+    for i in range(1,ts):
       tmp = net.activate(res[:,i-1])
       tmp[tmp>0.55] = 1
       tmp[tmp<=0.55] = 0
       res[:,i] = tmp
-    return res
+
+    # Calculate error
+    return err, res

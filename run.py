@@ -2,6 +2,7 @@
 import numpy as np
 from mlp import MLP
 from load_data import data_load
+from pybrain.tools.customxml import NetworkWriter
 
 def main():
   numHiddenNodes = 124
@@ -23,14 +24,31 @@ def main():
       net.train(data[:,:,j])
     # If we hit a quarterly epoch, run tests and output data and error
     if (i % 25 == 0)
+      runString = `numHiddenNodes` + "_epochs" + `i` +  "_run"
       # Get train error and output
+      trainErr = np.zeros[201]
       for k in range(1, 75):
-        res = net.test(data[:,0,k], 201)
-        np.savetxt("results/data_hiddennodes" + `numHiddenNodes` + "_epochs" + `i` +  "_train_actual.csv", test, delimiter=",", fmt="%d")
+        testData = data[:,0,k]
+        err, res = net.test(testData, 201)
+        trainErr = trainErr + err
+        np.savetxt("results/data_hiddennodes" + runString + `k` + "_train_actual.csv", testData, delimiter=",", fmt="%d")
+        np.savetxt("results/data_hiddennodes" + runString + `k` + "_train_predicted.csv", res, delimiter=",", fmt="%d")
+      np.savetxt("results/error_hiddennodes" + runString + `k` + "_train.csv", trainErr, delimiter=",", fmt="%d")
+
+      trainErr = trainErr / 75
       # Get test error and output
+      testErr = np.zeros[201]
       for k in range(75, 100):
-        res = net.test(data[:,0,k], 201)
-        np.savetxt("results/data_hiddennodes" + `numHiddenNodes` + "_epochs" + `i` +  "_test_actual.csv", test, delimiter=",", fmt="%d")
+        trainData = data[:,0,k]
+        err, res = net.test(trainData, 201)
+        testErr = testErr + err
+        np.savetxt("results/data_hiddennodes" + runString + `k` + "_test_actual.csv", trainData, delimiter=",", fmt="%d")
+        np.savetxt("results/data_hiddennodes" + runString + `k` + "_test_predicted.csv", res, delimiter=",", fmt="%d")
+      testErr = testErr / 25
+      np.savetxt("results/error_hiddennodes" + runString + `k` + "_test.csv", testErr, delimiter=",", fmt="%d")
+
+      # Save the network thus far
+      NetworkWriter.writeToFile(net, "results/network_hiddennodes" + `numHiddenNodes` + "_epochs" + `i` +  "_run" + `k` + ".xml")
   
 main()      
 
