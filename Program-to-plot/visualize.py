@@ -50,7 +50,7 @@ def plot(data_1,data_2,final_time_step = 200,initial_time_step = 0,Error=True):
     max_NN= max(Y_axis_NN_data)
     Y_max=max(max_orig,max_NN)
     if Error==False:
-        plt.ylabel('Output')
+        plt.ylabel('Output') 
         plt.xlabel('No. of Runs')
         plt.plot( X_axis,Y_axis_orig_data, 'ro', X_axis, Y_axis_NN_data, 'bo')
     elif Error==True:
