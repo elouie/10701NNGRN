@@ -1,22 +1,36 @@
 # This file retrieves the data, creates an algorithm, runs the prediction, saves the results to files, then creates plots of the error
 import numpy as np
-from mlp import MLP
+from mlp2 import MLP
 from load_data import data_load
 
 def main():
-  net = MLP(124)
-  for i in range(1, 75):
-    data = data_load('13A-no_0',i-1,i)
-    data = data.astype(int)
-    net.train(data, 25)
-  
-  for i in range(75, 100):
-    test = data_load('13A-no_0',i-1,i)
-    test = test.astype(int)
-    res = net.test(test[:,0], 201)
-    res = res.astype(int)
-    np.savetxt("results/test25epochs2hn_" + `i - 1` +  "_actual.csv", test, delimiter=",", fmt="%d")
-    np.savetxt("results/test25epochs2hn_" + `i - 1` +  "_predicted.csv", res, delimiter=",", fmt="%d")
+  numHiddenNodes = 124
+  numMolecules = 124
+  numTimesteps = 201
+  numRuns = 100
+  numEpochs = 100
+  net = MLP(numMolecules, numHiddenNodes)
 
+  # Load the data into a matrix for use over epochs
+  data = zeros((numMolecules,numTimeSteps,numRuns))
+  for i in range(numRuns):
+    data[:,:,i] = data_load('13A-no_0',i,i+1).astype(int)
+
+  # For each epoch
+  for i in range(numEpochs)
+    # For each run
+    for j in range(75)
+      net.train(data[:,:,j])
+    # If we hit a quarterly epoch, run tests and output data and error
+    if (i % 25 == 0)
+      # Get train error and output
+      for k in range(1, 75):
+        res = net.test(data[:,0,k], 201)
+        np.savetxt("results/data_hiddennodes" + `numHiddenNodes` + "_epochs" + `i` +  "_train_actual.csv", test, delimiter=",", fmt="%d")
+      # Get test error and output
+      for k in range(75, 100):
+        res = net.test(data[:,0,k], 201)
+        np.savetxt("results/data_hiddennodes" + `numHiddenNodes` + "_epochs" + `i` +  "_test_actual.csv", test, delimiter=",", fmt="%d")
+  
 main()      
 
