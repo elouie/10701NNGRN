@@ -15,9 +15,9 @@ from pybrain.datasets import SupervisedDataSet
 # net.test((1,0,0),8)
 
 class MLP:
-  def __init__(self, numMolecules):
+  def __init__(self, numMolecules, numHiddenLayers):
     self.nm = numMolecules
-    network = buildNetwork(numMolecules, numMolecules/2, numMolecules, hiddenclass=TanhLayer, outclass=TanhLayer)
+    network = buildNetwork(numMolecules, numHiddenLayers, numMolecules, hiddenclass=TanhLayer, outclass=TanhLayer)
     self.network = network
 
   def train(self, input):
@@ -39,13 +39,12 @@ class MLP:
       tmp[tmp<=0.55] = 0
       res[:,i] = tmp
 
-    # Calculate error
-    return err, res
+    return res
 
   def meansqerr(self, input, res, ts):
     # Get the mean squared error
     nm = self.nm
     err = np.zeros(ts)
-    for i in range(ts)
-      err[i] = np.absolute(input[:, i] - res[:,i])/nm
+    for i in range(ts):
+      err[i] = np.sum(np.absolute(input[:, i] - res[:,i]))/nm
     return err
