@@ -21,15 +21,17 @@ class MLP:
     b_hidden = tf.Variable(tf.zeros([hn]))
     y_hidden = tf.nn.sigmoid(tf.matmul(x, W_hidden) + b_hidden)
 
-    # Output layer: Softmax
+    # Output layer: Sigmoidal
     W_output = tf.Variable(tf.zeros([hn, nm]))
     b_output = tf.Variable(tf.zeros([nm]))
     y = tf.nn.sigmoid(tf.matmul(y_hidden, W_output) + b_output)
 
     self.net = y
+    self.nm = nm
 
   def train(self, input, epochs):
     net = self.net
+    nm = self.nm
 
     # Trainer setup
     y_ = tf.placeholder(tf.float32, [None, nm])
@@ -43,13 +45,14 @@ class MLP:
 
     self.train_step = train_step
 
-    x = np.transpose(np.delete(input,0,1))
-    y = np.transpose(np.delete(input,input.shape[1]-1,1))
+    x = np.delete(input,0,1)
+    y = np.delete(input,input.shape[1]-1,1)
     start = time.time()
     for epoch in range(epochs):
-        sess.run(train_step, feed_dict={x: x, y_: y})
-        # Run error here
-        print "Epoch resulted with " + `err` + " error."
+        for i in range(x.shape[1]):
+          err = sess.run(train_step, feed_dict={x: x[:,i], y_: y[:,i]})
+          # Run error here
+          print "Epoch resulted with " + err + " error."
     elapsed = (time.time() - start)
     print "Took " + `elapsed` + "ms to run."
 
@@ -59,9 +62,19 @@ class MLP:
     sess = tf.Session()
     res = np.zeros((self.nm, ts))
     res[:,0] = input
-    for i in range(1,ts-1):
-      tmp = sess.run(y, feed_dict={x: res[:,i-1]}
-      tmp[tmp>0.55] = 1
-      tmp[tmp<=0.55] = 0
+    err = np.zeros((self.nm))
+
+    x = np.transpose(np.delete(input,0,1))
+    y = np.transpose(np.delete(input,input.shape[1]-1,1))
+
+    for i in range(1,ts):
+      tmp = sess.run(net, feed_dict={x: res[:,i-1].tolist()})
+      print tmp
+      tmp[tmp>0.5] = 1
+      tmp[tmp<=0.5] = 0
       res[:,i] = tmp
+
+    # Get error
+    #correct_prediction = 
+    #accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     return res
