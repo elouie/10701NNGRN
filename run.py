@@ -9,7 +9,7 @@ def main():
   numMolecules = 124
   numTimesteps = 201
   numRuns = 99
-  numEpochs = 6
+  numEpochs = 10001
   net = MLP(numMolecules, numHiddenNodes)
 
   # Load the data into a matrix for use over epochs
@@ -33,8 +33,9 @@ def main():
         res = net.test(testData, 201)
         err = net.meansqerr(fullTestData,res,201)
         trainErr = trainErr + err
-        np.savetxt("results/data_hiddennodes" + runString + `k` + "_train_actual.csv", fullTestData, delimiter=",", fmt="%d")
-        np.savetxt("results/data_hiddennodes" + runString + `k` + "_train_predicted.csv", res, delimiter=",", fmt="%d")
+        #np.savetxt("results/data_hiddennodes" + runString + `k` + "_train_actual.csv", fullTestData, delimiter=",", fmt="%d")
+        if (k == 71):
+          np.savetxt("results/data_hiddennodes" + runString + `k` + "_train_predicted.csv", res, delimiter=",", fmt="%d")
       np.savetxt("results/error_hiddennodes" + runString + `k` + "_train.csv", trainErr, delimiter=",", fmt="%f")
 
       trainErr = trainErr / 75
@@ -46,8 +47,9 @@ def main():
         res = net.test(trainData, 201)
         err = net.meansqerr(data[:,:,k],res,201)
         testErr = testErr + err
-        np.savetxt("results/data_hiddennodes" + runString + `k` + "_test_actual.csv", fullTrainData, delimiter=",", fmt="%d")
-        np.savetxt("results/data_hiddennodes" + runString + `k` + "_test_predicted.csv", res, delimiter=",", fmt="%d")
+        #np.savetxt("results/data_hiddennodes" + runString + `k` + "_test_actual.csv", fullTrainData, delimiter=",", fmt="%d")
+        if (k == 88):
+          np.savetxt("results/data_hiddennodes" + runString + `k` + "_test_predicted.csv", res, delimiter=",", fmt="%d")
       testErr = testErr / 24
       np.savetxt("results/error_hiddennodes" + runString + `k` + "_test.csv", testErr, delimiter=",", fmt="%f")
 

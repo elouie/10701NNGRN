@@ -26,6 +26,7 @@ class MLP:
     ds.setField('input', np.transpose(np.delete(input,0,1)))
     ds.setField('target', np.transpose(np.delete(input,input.shape[1]-1,1)))
     trainer = BackpropTrainer(self.network, ds)
+    trainer.train()
 
   def test(self, input, ts):
     net = self.network
