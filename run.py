@@ -1,22 +1,46 @@
-# This file retrieves the data, creates an algorithm, runs the prediction, saves the results to files, then creates plots of the error
+# Welcome to Genetic Regulatory Network predictive modeling!
+# This code generates a neural network to run simulations with.
+# These are the steps:
+
 import numpy as np
 import time
 from mlp import MLP
 from load_data import data_load
-from pybrain.tools.customxml.networkwriter import NetworkWriter
 
 def main():
-  numHiddenNodes = 600
+  # BEGIN load command line arguments
+  # Options:
+  #   loadNetworkFname: The file name of a previously saved network to load
+  #   saveNetworkFname: The file name to save a network to
+  #   numHiddenNodes: The number of hidden nodes to use in the hidden layer
+  #   numHiddenLayers: The number of hidden layers to use before the output layer
+  #   numMolecules: The number of rows/molecules in the data
+  #   numTimesteps: The number of timesteps that the input runs on
+  #   numTestTimesteps: The number of timesteps to generate during testing (Useful for evaluating longterm insights)
+  #   numRuns: The number of runs in each initialized state dataset
+  #   numEpochs: Maximum number of epochs to allow the neural network to run
+  #              (May be needed if no good local boundary)
+  numHiddenNodes = 100
+  numHiddenLayers = 1
   numMolecules = 124
   numTimesteps = 201
+  numTestTimesteps = 201
   numRuns = 99
-  numEpochs = 501
-  net = MLP(numMolecules, numHiddenNodes)
+  numEpochs = 801
+  # END load command line arguments
+
+  # Set up the initial network
+  net = MLP(numMolecules, numHiddenNodes, numHiddenLayers)
 
   # Load the data into a matrix for use over epochs
   data = np.zeros((numMolecules,numTimesteps,numRuns))
   for i in range(numRuns):
     data[:,:,i] = data_load('13A-no_0',i,i+1).astype(int)
+
+  # Load the data into a matrix for use over epochs
+  secondary_data = np.zeros((numMolecules,numTimesteps,numRuns))
+  for i in range(numRuns):
+    secondary_data[:,:,i] = data_load('14A-no_0',i,i+1).astype(int)
 
   # For each epoch
   for i in range(numEpochs):
@@ -57,9 +81,24 @@ def main():
       print("Run " + `i` + " had " + `testErr[200]` + " test error.");
       np.savetxt("results/error_hiddennodes" + runString + `k` + "_test.csv", testErr, delimiter=",", fmt="%f")
 
+      # Get test error and output
+      altTestErr = np.zeros(201)
+      for k in range(75, numRuns):
+        trainData = secondary_data[:,0,k]
+        fullTrainData = secondary_data[:,:,k]
+        res = net.test(trainData, 201)
+        err = net.meansqerr(fullTrainData,res,201)
+        altTestErr = altTestErr + err
+        #np.savetxt("results/data_hiddennodes" + runString + `k` + "_test_actual.csv", fullTrainData, delimiter=",", fmt="%d")
+        if (k == 88):
+          np.savetxt("results/data_hiddennodes" + runString + `k` + "_alttest_predicted.csv", res, delimiter=",", fmt="%d")
+      altTestErr = altTestErr / (numRuns-75)
+      print("Run " + `i` + " had " + `altTestErr[200]` + " test error.");
+      np.savetxt("results/error_hiddennodes" + runString + `k` + "_alttest.csv", altTestErr, delimiter=",", fmt="%f")
+
       # Save the network thus far
-      NetworkWriter.writeToFile(net, "results/network_hiddennodes" + `numHiddenNodes` + "_epochs" + `i` +  "_run" + `k` + ".xml")
-      print("Run took %s s" % (time.time() - starttime))
-  
-main()      
+      #NetworkWriter.writeToFile(net, "results/network_hiddennodes" + `numHiddenNodes` + "_epochs" + `i` +  "_run" + `k` + ".xml")
+    print("Run " + `i` + " took %s s" % (time.time() - starttime))
+
+main()
 

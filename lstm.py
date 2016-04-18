@@ -11,8 +11,8 @@ import tensorflow as tf
 # net.train(a,3)
 # net.test((1,0,0),8)
 
-class MLP:
-  # net = MLP(nm, hn, hl)
+class LSTM:
+  # net = LSTM(nm, hn, hl)
   #   nm: Number of molecules in the data
   #   hn: Number of hidden nodes/units per layer
   #   hl: Number of hidden layers prior to the output layer
