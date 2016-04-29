@@ -45,7 +45,7 @@ def main():
       exit()
 
   # Set up the initial network
-  net = MLP(numMolecules, numHiddenNodes, numHiddenLayers)
+  model = createOrLoadModel(loadNetworkFname, learnerType, numHiddenUnits, numMolecules, learningRate)
 
   # Load the data into a matrix for use over epochs
   data = np.zeros((numMolecules,numTimesteps,numRuns))
