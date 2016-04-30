@@ -1,4 +1,4 @@
-def readOrCreateNetwork(loadFName, learnerType, numHiddenUnits, numMolecules, learningRate):
+def createOrLoadModel(loadFName, learnerType, numHiddenUnits, numMolecules, learningRate):
     model
     # Create a network:
     if learnerType == "lstm":
@@ -9,3 +9,4 @@ def readOrCreateNetwork(loadFName, learnerType, numHiddenUnits, numMolecules, le
         loadPath = "models/" + loadFName
         model = model_from_json(open(loadPath + '.json').read())
         model.load_weights(loadPath + '.h5')
+        model.compile(loss='mean_squared_error', optimizer=SGD(lr=learningRate, momentum=momentum, nesterov=True))

@@ -23,9 +23,9 @@ def readArgs():
     parser.add_argument("-r", "--numRuns", default=99, type=int, help="The number of runs in each initialized state dataset")
     parser.add_argument("-e", "--maxEpochs", default=20000, type=int, help="Maximum number of epochs to allow the neural network to run (May be needed if no good local boundary)")
     parser.add_argument("-d", "--loadDataFname", default="", help="The file name where data should be loaded from")
-    parser.add_argument("-x", "--saveDataFname", default="network.net", help="The file name where results should be saved to")
+    parser.add_argument("-x", "--saveDataFname", default="", help="The file name where results should be saved to")
     parser.add_argument("-i", "--loadNetworkFname", default="", help="The file name of a previously saved network to load")
-    parser.add_argument("-o", "--saveNetworkFname", default="network.net", help="The file name to save a network to")
+    parser.add_argument("-o", "--saveNetworkFname", default="", help="The file name to save a network to")
     parser.add_argument("-p", "--learningRate", default=0.2, type=float, help="The rate at which the network will learn")
     parser.add_argument("-f", "--learnerType", default="MLP")
 

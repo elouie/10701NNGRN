@@ -7,6 +7,8 @@ import time
 from mlp import MLP
 from load_data import data_load
 from readArgs import readArgs
+from createOrLoadModel import createOrLoadModel
+from trainModel import trainModel
 
 def main():
   # Load commandline arguments
@@ -19,11 +21,17 @@ def main():
   numRuns = args.numRuns
   maxEpochs = args.maxEpochs
   loadDataFname = args.loadDataFname
-  loadDataFname = args.saveDataFname
+  saveDataFname = args.saveDataFname
   loadNetworkFname = args.loadNetworkFname
   saveNetworkFname = args.saveNetworkFname
   learningRate = args.learningRate
   learnerType = args.learnerType
+
+  # Sane default file names:
+  if saveDataFname == "":
+      saveDataFname = learnerType + "_hn_" + `numHiddenUnits` + "_hl_" + `numHiddenLayers` + "_mols_" + `numMolecules` + "_runs_" + `numRuns`
+  if saveNetworkFname == "":
+      saveNetworkFname = learnerType + "_hn_" + `numHiddenUnits` + "_hl_" + `numHiddenLayers` + "_mols_" + `numMolecules` + "_runs_" + `numRuns`
 
   s = []
   s.append("Beginning {} training with parameters:".format(learnerType))
@@ -34,8 +42,8 @@ def main():
   s.append("\tNumber of testing timesteps: {}".format(numTestTimesteps))
   s.append("\tNumber of runs per input test file: {}".format(numRuns))
   s.append("\tMaximum epochs to train over: {}".format(maxEpochs))
-  s.append("\tFile name to load data".format(loadDataFname))
-  s.append("\tFile name to load data".format(saveDataFname))
+  s.append("\tFile name to load data: {}".format(loadDataFname))
+  s.append("\tFile name to save data: {}".format(saveDataFname))
   s.append("\tFile name to load network from (Empty to not load): {}".format(loadNetworkFname))
   s.append("\tFile name to save network to: {}".format(saveNetworkFname))
   s.append("\tLearning rate of training: {}".format(learningRate))
@@ -47,6 +55,12 @@ def main():
   if not (answer == "y" or answer == "yes"):
       print "Stopping!"
       exit()
+
+  # Set all save/load names to specific directories:
+  saveDataFname = "data/" + saveDataFname
+  loadDataFname = "data/" + loadDataFname
+  saveNetworkFname = "data/" + saveNetworkFname
+  loadNetworkFname = "data/" + loadNetworkFname
 
   # Set up the initial network
   model = createOrLoadModel(loadNetworkFname, learnerType, numHiddenUnits, numMolecules, learningRate)
