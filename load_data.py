@@ -5,7 +5,6 @@ import itertools
 
 def data_load(filename, Run_num_start, Run_num_end):
         data = []
-        i=0
         with open(filename,'r') as infile:
                 copy = False
                 for line in infile:
@@ -17,14 +16,13 @@ def data_load(filename, Run_num_start, Run_num_end):
                                 line = line.split()
                                 line = line[1:]
                                 data.append(np.array(line))
-                                i=i+1
         data = np.array(data)    
         return data
 
 
 def main():
         data = data_load('13A-no_0',0,1)
-        print data.shape,i
+        print data.shape
 
 
 main()      
