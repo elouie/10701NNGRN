@@ -19,6 +19,7 @@ def main():
   numRuns = args.numRuns
   maxEpochs = args.maxEpochs
   loadDataFname = args.loadDataFname
+  loadDataFname = args.saveDataFname
   loadNetworkFname = args.loadNetworkFname
   saveNetworkFname = args.saveNetworkFname
   learningRate = args.learningRate
@@ -34,6 +35,7 @@ def main():
   s.append("\tNumber of runs per input test file: {}".format(numRuns))
   s.append("\tMaximum epochs to train over: {}".format(maxEpochs))
   s.append("\tFile name to load data".format(loadDataFname))
+  s.append("\tFile name to load data".format(saveDataFname))
   s.append("\tFile name to load network from (Empty to not load): {}".format(loadNetworkFname))
   s.append("\tFile name to save network to: {}".format(saveNetworkFname))
   s.append("\tLearning rate of training: {}".format(learningRate))
@@ -53,10 +55,9 @@ def main():
   data = np.zeros((numRuns, numMolecules, numTimesteps))
   for i in range(numRuns):
     data[i,:,:] = data_load(loadDataFname,i,i+1).astype(int)
-    
+
   # Train the data
- 
-  trainModel(model, data, ...)
+  trainModel(model, data, saveNetworkFname, saveDataFname)
 
 main()
 
