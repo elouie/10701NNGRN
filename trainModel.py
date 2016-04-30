@@ -2,13 +2,16 @@ from keras.optimizers import SGD
 from keras.utils.visualize_util import plot
 from runTestsAndSave import runTestsAndSave
 
-def trainModel(model, data, epochs):
+def trainModel(model, data, epochs,percent_train):
 
   # Split data into training data and test data:
-  train_data_x = data.delete(...)
-  train_data_y = ...
-  validation_data_x = ...
-  validation_data_y = ...
+  
+  validation_data= data[percent_train+1:,:,:]
+  training_data=data[percent_train:,:,:]
+  train_data_x =  data[:,:,0:-1]
+  train_data_y = data[:,:,1:]
+  validation_data_x = validation_data[:,:,0:-1]
+  validation_data_y =  validation_data[:,:,1:]
 
   # For each epoch
   for i in range(numEpochs):

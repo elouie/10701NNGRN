@@ -53,9 +53,12 @@ def main():
   data = np.zeros((numRuns, numMolecules, numTimesteps))
   for i in range(numRuns):
     data[i,:,:] = data_load(loadDataFname,i,i+1).astype(int)
-
+    
   # Train the data
+ 
   trainModel(model, data, ...)
 
 main()
+
+
 
