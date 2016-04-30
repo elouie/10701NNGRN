@@ -3,11 +3,13 @@ from keras.utils.visualize_util import plot
 from runTestsAndSave import runTestsAndSave
 
 def trainModel(model, data, epochs,percent_train):
-
+"""
+percent_train should be float like .75 or .85 and not 
+"""
   # Split data into training data and test data:
-  
-  validation_data= data[percent_train+1:,:,:]
-  training_data=data[percent_train:,:,:]
+  data_div=int(data.shape[0]*percent_train)
+  validation_data= data[data_divn+1:,:,:]
+  training_data=data[data_div:,:,:]
   train_data_x =  data[:,:,0:-1]
   train_data_y = data[:,:,1:]
   validation_data_x = validation_data[:,:,0:-1]
