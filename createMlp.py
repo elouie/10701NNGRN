@@ -1,6 +1,7 @@
 from keras.models import Sequential
+from keras.layers.core import Activation, Dense
 
-def createMlp(numHiddenUnits, numMolecules, learningRate=0.1, momentum=0.9):
+def createMlp(numHiddenUnits, numMolecules):
     # Make network
     model = Sequential()
 
@@ -11,8 +12,5 @@ def createMlp(numHiddenUnits, numMolecules, learningRate=0.1, momentum=0.9):
     # Make output layer
     model.add(Dense(output_dim=numMolecules, input_dim=numHiddenUnits))
     model.add(Activation("sigmoid"))
-
-    # Define training function
-    model.compile(loss='mean_squared_error', optimizer=SGD(lr=learningRate, momentum=momentum, nesterov=True))
 
     return model

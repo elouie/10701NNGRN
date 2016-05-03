@@ -3,7 +3,6 @@
 # These are the steps:
 
 import numpy as np
-import time
 from mlp import MLP
 from load_data import data_load
 from readArgs import readArgs
@@ -57,21 +56,22 @@ def main():
       exit()
 
   # Set all save/load names to specific directories:
-  saveDataFname = "data/" + saveDataFname
+  saveDataFname = "results/" + saveDataFname
   loadDataFname = "data/" + loadDataFname
-  saveNetworkFname = "data/" + saveNetworkFname
-  loadNetworkFname = "data/" + loadNetworkFname
+  saveNetworkFname = "networks/" + saveNetworkFname
+  if not loadNetworkFname is None:
+    loadNetworkFname = "networks/" + loadNetworkFname
 
   # Set up the initial network
   model = createOrLoadModel(loadNetworkFname, learnerType, numHiddenUnits, numMolecules, learningRate)
 
   # Load the data into a matrix for use over epochs
-  data = np.zeros((numRuns, numMolecules, numTimesteps))
+  data = np.zeros((numRuns, numMolecules, numTimesteps), dtype=int)
   for i in range(numRuns):
-    data[i,:,:] = data_load(loadDataFname,i,i+1).astype(int)
+    data[i,:,:] = data_load(loadDataFname,i,i+1, numMolecules, numTimesteps)
 
   # Train the data
-  trainModel(model, data, saveNetworkFname, saveDataFname)
+  trainModel(model, data, maxEpochs, saveNetworkFname, saveDataFname)
 
 main()
 

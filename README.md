@@ -10,6 +10,22 @@ For this project, we use SciPy, NumPy, and Theano for mathematical functions. Pl
 * [SciPy](http://www.scipy.org/install.html)
 * [Theano](http://www.deeplearning.net/software/theano/install.html#install)
 
+### For MacOS:
+
+Steps, some order matters, since there are dependencies during build steps:
+
+* Install brew
+* Install graphviz c libraries
+* Install Theano graphics library
+* Install SciPy, NumPy, and Theano
+
+```
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew install graphviz
+pip install -U pip setuptools
+pip install scipy numpy theano
+```
+
 ## Running Tests
 We use the [unittest framework](https://docs.python.org/2/library/unittest.html) provided by Python. Instructions will be updated as test are added.
 
