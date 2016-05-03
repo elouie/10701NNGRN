@@ -9,13 +9,13 @@ from keras.models import Sequential
 def runTestsAndSave(model, X, Y, numRuns, numMols, numTimesteps, saveFName):
     savePath = "data/" + saveFName + "_error_run_{}.csv"
 
-    predictions = np.zeros(numRuns, numMols, numTimesteps)
+    predictions = np.zeros((numRuns, numMols, numTimesteps))
     predictions[:,:,0] = X
     error = np.zeros(numTimesteps)
 
     # Predict next prediction based on previous prediction
     for k in range(1, numTimesteps):
-        res[:,:,k] = model.predict(res[:,:,k-1], batch_size=numRuns)
+        res[:,:,k] = model.predict(res[:,:,k-1].T, batch_size=numRuns).T
 
     # Calculate error
     error = meanSqErr(Y, np.delete(predictions,0,2), numMols, numTimesteps)
