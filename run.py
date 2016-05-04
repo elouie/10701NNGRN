@@ -3,7 +3,6 @@
 # These are the steps:
 
 import numpy as np
-from mlp import MLP
 from load_data import data_load
 from readArgs import readArgs
 from createOrLoadModel import createOrLoadModel
