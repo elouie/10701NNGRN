@@ -15,7 +15,10 @@ def runTestsAndSave(model, X, Y, numRuns, numMols, numTimesteps, saveFName):
 
     # Predict next prediction based on previous prediction
     for k in range(1, numTimesteps):
-        predictions[:,:,k] = model.predict(predictions[:,:,k-1], batch_size=numRuns)
+        temp = model.predict(predictions[:,:,k-1], batch_size=numRuns)
+        temp[temp < 0.5] = 0
+        temp[temp >= 0.5] = 1
+        predictions[:,:,k] = temp
 
     # Calculate error
     error = meanSqErr(Y, np.delete(predictions,0,2), numRuns, numMols, numTimesteps-1)
