@@ -11,7 +11,7 @@ def data_load(filename, Run_num_start, Run_num_end, num_mol, num_ts):
         for line in infile:
             if line.strip() == "Run #"+str(Run_num_start):
                 copy = True
-            elif line.strip() == "Run #"+str(Run_num_end):
+            elif line.strip() == "":
                 copy = False
             elif copy:
                 line = line.split()

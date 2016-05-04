@@ -27,8 +27,8 @@ def main():
     learningRate = args.learningRate
     learnerType = args.learnerType
 
-    resultsDir = "results/{}_hl_{}_hn_{}_runs_{}_mol_{}_ts_{}/".format(learnerType, numHiddenLayers, numHiddenUnits, numRuns, numMolecules, numTimesteps)
-    modelsDir = "models/{}_hl_{}_hn_{}_runs_{}_mol_{}_ts_{}/".format(learnerType, numHiddenLayers, numHiddenUnits, numRuns, numMolecules, numTimesteps)
+    resultsDir = "results/{}_hl_{}_hn_{}_runs_{}_mol_{}_ts_{}_lr_{:0.4f}/".format(learnerType, numHiddenLayers, numHiddenUnits, numRuns, numMolecules, numTimesteps, learningRate)
+    modelsDir = "models/{}_hl_{}_hn_{}_runs_{}_mol_{}_ts_{}_lr_{:0.4f}/".format(learnerType, numHiddenLayers, numHiddenUnits, numRuns, numMolecules, numTimesteps, learningRate)
 
     s = []
     s.append("Beginning {} training with parameters:".format(learnerType))

@@ -19,7 +19,9 @@ def runTestsAndSave(model, X, Y, numRuns, numMols, numTimesteps, saveFName):
 
     # Calculate error
     error = meanSqErr(Y, np.delete(predictions,0,2), numRuns, numMols, numTimesteps-1)
-    print("We have  " + `error[numTimesteps-2]` + " error.");
+    #print("We have  " + `error[numTimesteps-2]` + " error.");
 
     # Save error output
-    np.savetxt(savePath.format(k), error, delimiter=",", fmt="%f")
+    np.savetxt(savePath.format(k), error, delimiter=",", fmt="%6f")
+
+    return np.average(error)
