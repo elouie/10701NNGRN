@@ -58,9 +58,9 @@ def main():
   # Set all save/load names to specific directories:
   saveDataFname = "results/" + saveDataFname
   loadDataFname = "data/" + loadDataFname
-  saveNetworkFname = "networks/" + saveNetworkFname
+  saveNetworkFname = "models/" + saveNetworkFname
   if not loadNetworkFname is None:
-    loadNetworkFname = "networks/" + loadNetworkFname
+    loadNetworkFname = "models/" + loadNetworkFname
 
   # Set up the initial network
   model = createOrLoadModel(loadNetworkFname, learnerType, numHiddenUnits, numMolecules, learningRate)

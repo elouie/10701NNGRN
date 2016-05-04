@@ -21,7 +21,7 @@ def readArgs():
     parser.add_argument("-s", "--numTimesteps", default=201, type=int, help="The number of timesteps that the input runs on")
     parser.add_argument("-t", "--numTestTimesteps", default=201, type=int, help="The number of timesteps to generate during testing (Useful for evaluating longterm insights)")
     parser.add_argument("-r", "--numRuns", default=99, type=int, help="The number of runs in each initialized state dataset")
-    parser.add_argument("-e", "--maxEpochs", default=20000, type=int, help="Maximum number of epochs to allow the neural network to run (May be needed if no good local boundary)")
+    parser.add_argument("-e", "--maxEpochs", default=50, type=int, help="Maximum number of epochs to allow the neural network to run (May be needed if no good local boundary)")
     parser.add_argument("-d", "--loadDataFname", default="", help="The file name where data should be loaded from")
     parser.add_argument("-x", "--saveDataFname", default="", help="The file name where results should be saved to")
     parser.add_argument("-i", "--loadNetworkFname", default=None, help="The file name of a previously saved network to load")

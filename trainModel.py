@@ -10,14 +10,14 @@ def trainModel(model, data, epochs, saveModelFname, saveDataFname):
     numTimesteps = data.shape[2]
     numTrainRuns = int(floor(numRuns*0.75))
     print "numTrainRuns {}".format(numTrainRuns)
-    numValidationRuns = numRuns - numTrainRuns + 1
+    numValidationRuns = numRuns - numTrainRuns
 
     # Split data into training data and test data:
-    training_data = data[numTrainRuns:,:,:]
+    training_data = data[:numTrainRuns,:,:]
     train_data_x = training_data[:,:,0:-1]
     train_init_x = training_data[:,:,0]
     train_data_y = training_data[:,:,1:]
-    validation_data = data[numTrainRuns+1:,:,:]
+    validation_data = data[numTrainRuns:,:,:]
     validation_data_x = validation_data[:,:,0:-1]
     validation_init_x = validation_data[:,:,0]
     validation_data_y =    validation_data[:,:,1:]
@@ -31,22 +31,22 @@ def trainModel(model, data, epochs, saveModelFname, saveDataFname):
 
         # For each run
         for j in range(numTrainRuns):
-            err = model.train_on_batch(train_data_x[i,:,:].T, train_data_y[i,:,:].T)
+            err = model.train_on_batch(train_data_x[j,:,:].T, train_data_y[j,:,:].T)
             print err
 
-        print "Train time for epoch {} was {:10.4f}".format(i, time() - starttime)
+        print "Train time for epoch {} was {:10.4f}".format(j, time() - starttime)
 
         # Run predictions on training data and output error and predictions to file
         runTestsAndSave(model, train_init_x, train_data_y, numTrainRuns, numMols, numTimesteps, saveDataFname + "_run_" + `i` + "_train")
         runTestsAndSave(model, validation_init_x, validation_data_y, numValidationRuns, numMols, numTimesteps, saveDataFname + "_run_" + `i` + "_validation")
 
         # Visualize and save model
-        modelFname='models/' + saveModelFname + '_run_' + `i`
-        plot(model, to_file=(modelFname + '.png'))
+        #modelFname=saveModelFname + '_run_' + `i`
+        #plot(model, to_file=(modelFname + '.png'))
 
-        json_string = model.to_json()
-        open(modelFname + '.json', 'w').write(json_string)
-        model.save_weights(modelFname + '.h5')
+        #json_string = model.to_json()
+        #open(saveModelFname + '.json', 'w').write(json_string)
+        #model.save_weights(saveModelFname + '.h5')
 
-        print "Execution time for epoch %d was %.3f".format(i, time() - starttime)
-    print "Total execution time for %d epochs wa %.3f".format(epochs, time() - totalstarttime)
+        print "Execution time for epoch {} was {:10.4f}".format(j, time() - starttime)
+    print "Total execution time for {} epochs was {:10.4f}".format(epochs, time() - totalstarttime)
