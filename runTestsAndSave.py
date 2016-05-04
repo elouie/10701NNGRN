@@ -18,8 +18,8 @@ def runTestsAndSave(model, X, Y, numRuns, numMols, numTimesteps, saveFName):
         predictions[:,:,k] = model.predict(predictions[:,:,k-1], batch_size=numRuns)
 
     # Calculate error
-    error = meanSqErr(Y, np.delete(predictions,0,2), numRuns, numMols, numTimesteps)
-    print("We have  " + `error[numTimesteps-1]` + " error.");
+    error = meanSqErr(Y, np.delete(predictions,0,2), numRuns, numMols, numTimesteps-1)
+    print("We have  " + `error[numTimesteps-2]` + " error.");
 
     # Save error output
     np.savetxt(savePath.format(k), error, delimiter=",", fmt="%f")

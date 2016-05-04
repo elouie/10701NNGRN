@@ -22,8 +22,9 @@ Steps, some order matters, since there are dependencies during build steps:
 ```
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew install graphviz
+brew install homebrew/science/hdf5
 pip install -U pip setuptools
-pip install scipy numpy theano
+pip install scipy numpy theano pydot h5py
 ```
 
 ## Running Tests

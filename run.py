@@ -8,70 +8,70 @@ from load_data import data_load
 from readArgs import readArgs
 from createOrLoadModel import createOrLoadModel
 from trainModel import trainModel
+from dirmake import dirmake
 
 def main():
-  # Load commandline arguments
-  args = readArgs()
-  numHiddenUnits = args.numHiddenUnits
-  numHiddenLayers = args.numHiddenLayers
-  numMolecules = args.numMolecules
-  numTimesteps = args.numTimesteps
-  numTestTimesteps = args.numTestTimesteps
-  numRuns = args.numRuns
-  maxEpochs = args.maxEpochs
-  loadDataFname = args.loadDataFname
-  saveDataFname = args.saveDataFname
-  loadNetworkFname = args.loadNetworkFname
-  saveNetworkFname = args.saveNetworkFname
-  learningRate = args.learningRate
-  learnerType = args.learnerType
+    # Load commandline arguments
+    args = readArgs()
+    numHiddenUnits = args.numHiddenUnits
+    numHiddenLayers = args.numHiddenLayers
+    numMolecules = args.numMolecules
+    numTimesteps = args.numTimesteps
+    numTestTimesteps = args.numTestTimesteps
+    numRuns = args.numRuns
+    maxEpochs = args.maxEpochs
+    loadDataFname = args.loadDataFname
+    saveDataFname = args.saveDataFname
+    loadNetworkFname = args.loadNetworkFname
+    saveNetworkFname = args.saveNetworkFname
+    learningRate = args.learningRate
+    learnerType = args.learnerType
 
-  # Sane default file names:
-  if saveDataFname == "":
-      saveDataFname = learnerType + "_hn_" + `numHiddenUnits` + "_hl_" + `numHiddenLayers` + "_mols_" + `numMolecules` + "_runs_" + `numRuns`
-  if saveNetworkFname == "":
-      saveNetworkFname = learnerType + "_hn_" + `numHiddenUnits` + "_hl_" + `numHiddenLayers` + "_mols_" + `numMolecules` + "_runs_" + `numRuns`
+    resultsDir = "results/{}_hl_{}_hn_{}_runs_{}_mol_{}_ts_{}/".format(learnerType, numHiddenLayers, numHiddenUnits, numRuns, numMolecules, numTimesteps)
+    modelsDir = "models/{}_hl_{}_hn_{}_runs_{}_mol_{}_ts_{}/".format(learnerType, numHiddenLayers, numHiddenUnits, numRuns, numMolecules, numTimesteps)
 
-  s = []
-  s.append("Beginning {} training with parameters:".format(learnerType))
-  s.append("\tNumber of hidden units: {}".format(numHiddenUnits))
-  s.append("\tNumber of hidden layers: {}".format(numHiddenLayers))
-  s.append("\tNumber of molecules: {}".format(numMolecules))
-  s.append("\tNumber of timesteps: {}".format(numTimesteps))
-  s.append("\tNumber of testing timesteps: {}".format(numTestTimesteps))
-  s.append("\tNumber of runs per input test file: {}".format(numRuns))
-  s.append("\tMaximum epochs to train over: {}".format(maxEpochs))
-  s.append("\tFile name to load data: {}".format(loadDataFname))
-  s.append("\tFile name to save data: {}".format(saveDataFname))
-  s.append("\tFile name to load network from (Empty to not load): {}".format(loadNetworkFname))
-  s.append("\tFile name to save network to: {}".format(saveNetworkFname))
-  s.append("\tLearning rate of training: {}".format(learningRate))
-  s.append("\tType of learner to use (MLP + LSTM): {}".format(learnerType))
-  s.append("\nIs this good? (Y/N)")
-  print "\n".join(s)
+    s = []
+    s.append("Beginning {} training with parameters:".format(learnerType))
+    s.append("\tNumber of hidden units: {}".format(numHiddenUnits))
+    s.append("\tNumber of hidden layers: {}".format(numHiddenLayers))
+    s.append("\tNumber of molecules: {}".format(numMolecules))
+    s.append("\tNumber of timesteps: {}".format(numTimesteps))
+    s.append("\tNumber of testing timesteps: {}".format(numTestTimesteps))
+    s.append("\tNumber of runs per input test file: {}".format(numRuns))
+    s.append("\tMaximum epochs to train over: {}".format(maxEpochs))
+    s.append("\tFile name to load data: {}".format(loadDataFname))
+    s.append("\tFile name to save data: {}".format(resultsDir))
+    s.append("\tFile name to load network from (Empty to not load): {}".format(loadNetworkFname))
+    s.append("\tFile name to save network to: {}".format(saveNetworkFname))
+    s.append("\tLearning rate of training: {}".format(learningRate))
+    s.append("\tType of learner to use (MLP + LSTM): {}".format(learnerType))
+    s.append("\nIs this good? (Y/N)")
+    print "\n".join(s)
 
-  answer = raw_input().lower()
-  if not (answer == "y" or answer == "yes"):
-      print "Stopping!"
-      exit()
+    answer = raw_input().lower()
+    if not (answer == "y" or answer == "yes"):
+        print "Stopping!"
+        exit()
 
-  # Set all save/load names to specific directories:
-  saveDataFname = "results/" + saveDataFname
-  loadDataFname = "data/" + loadDataFname
-  saveNetworkFname = "models/" + saveNetworkFname
-  if not loadNetworkFname is None:
-    loadNetworkFname = "models/" + loadNetworkFname
+    dirmake(resultsDir)
+    dirmake(modelsDir)
 
-  # Set up the initial network
-  model = createOrLoadModel(loadNetworkFname, learnerType, numHiddenUnits, numMolecules, learningRate)
+    # Set all save/load names to specific directories:
+    loadDataFname = "data/" + loadDataFname
+    saveNetworkFname = "models/" + saveNetworkFname
+    if not loadNetworkFname is None:
+        loadNetworkFname = "models/" + loadNetworkFname
 
-  # Load the data into a matrix for use over epochs
-  data = np.zeros((numRuns, numMolecules, numTimesteps), dtype=int)
-  for i in range(numRuns):
-    data[i,:,:] = data_load(loadDataFname,i,i+1, numMolecules, numTimesteps)
+    # Set up the initial network
+    model = createOrLoadModel(loadNetworkFname, learnerType, numHiddenUnits, numMolecules, learningRate)
 
-  # Train the data
-  trainModel(model, data, maxEpochs, saveNetworkFname, saveDataFname)
+    # Load the data into a matrix for use over epochs
+    data = np.zeros((numRuns, numMolecules, numTimesteps), dtype=int)
+    for i in range(numRuns):
+        data[i,:,:] = data_load(loadDataFname,i,i+1, numMolecules, numTimesteps)
+
+    # Train the data
+    trainModel(model, data, maxEpochs, modelsDir, resultsDir)
 
 main()
 
